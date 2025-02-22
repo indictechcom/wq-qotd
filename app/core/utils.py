@@ -3,7 +3,6 @@ import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
 import re
-import uuid
 
 QOTD_API = 'https://en.wikiquote.org/w/api.php'
 PARAMS = {

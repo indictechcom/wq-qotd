@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from routers import quotes
-from models import Base, engine
+from app.api.routers import quotes
+from app.database.models import Base, engine
 
 # Initialize Database
 Base.metadata.create_all(bind=engine)
