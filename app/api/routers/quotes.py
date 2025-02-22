@@ -1,10 +1,10 @@
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List, Optional
-from models import SessionLocal
-from schemas import QuoteSchema
-from crud import add_quote_to_db, get_quote_by_date, get_all_quotes
-from utils import fetch_quote_of_the_day
+from app.database.models import SessionLocal
+from app.schemas.schemas import QuoteSchema
+from app.database.crud import add_quote_to_db, get_quote_by_date, get_all_quotes
+from app.core.utils import fetch_quote_of_the_day
 from datetime import datetime
 
 # Router instance
