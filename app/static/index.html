@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quote of the Day</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Quote of the Day</h1>
+        
+        <!-- Quote of the Day Section -->
+        <section id="quoteOfDay" class="quote-section">
+            <h2>Today's Quote</h2>
+            <div id="todayQuote" class="quote-card">
+                <p class="quote-text">Loading...</p>
+                <p class="quote-author"></p>
+            </div>
+        </section>
+
+        <!-- Search by Date Section -->
+        <section id="searchSection" class="quote-section">
+            <h2>Search by Date</h2>
+            <div class="search-container">
+                <input type="date" id="datePicker" placeholder="Select a date">
+                <button onclick="searchByDate()">Search Quote</button>
+            </div>
+            <div id="dateSearchResult" class="quote-card hidden">
+                <!-- Results will be inserted here -->
+            </div>
+        </section>
+
+        <!-- All Quotes Section -->
+        <section id="allQuotes" class="quote-section">
+            <h2>Quote Collection</h2>
+            <div class="filter-container">
+                <input type="text" id="authorFilter" placeholder="Enter author name...">
+                <button onclick="filterQuotes()">Filter by Author</button>
+            </div>
+            <div id="quotesList" class="quotes-list">
+                <!-- Quotes will be inserted here -->
+            </div>
+            <div class="pagination">
+                <button onclick="previousPage()">Previous</button>
+                <span id="pageInfo">Page 1</span>
+                <button onclick="nextPage()">Next</button>
+            </div>
+        </section>
+    </div>
+    <script src="/static/script.js"></script>
+</body>
+</html> 

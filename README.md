@@ -112,6 +112,10 @@ wq-qotd/
 │   └── schemas/
 │       ├── __init__.py
 │       └── schemas.py
+|   ├── static/
+│       ├── index.html
+│       ├── styles.css
+│       └── script.js       
 ├── main.py
 ├── requirements.txt
 ├── .env
@@ -132,6 +136,56 @@ wq-qotd/
         -   `models.py`: SQLAlchemy models
         -   `init_db.py`: Database initialization
     -   `schemas/`: Pydantic models for request/response validation
+    -  `static/`: Frontend Related Code
+
+## Frontend Implementation
+
+The application includes a built-in frontend interface served directly from the FastAPI backend.
+
+### Frontend Features
+- Modern, responsive design
+- Quote of the Day display
+- Date-based quote search
+- Author filtering
+- Pagination for quote browsing
+- Error handling and user feedback
+
+### Frontend Structure
+The frontend is located in the `app/static` directory:
+```bash
+app/static/
+├── index.html    # Main HTML structure
+├── styles.css    # Styling and animations
+└── script.js     # Frontend logic and API interactions
+```
+
+### Frontend Technologies
+- HTML5 for structure
+- CSS3 for styling
+- Vanilla JavaScript for functionality
+- Google Fonts (Poppins) for typography
+
+### Accessing the Frontend
+The frontend is automatically served when you run the FastAPI application:
+
+
+### Frontend Features Breakdown
+- **Quote of the Day Section**
+  - Automatically displays the current day's quote
+  - Updates daily
+  - Animated card layout
+
+- **Date Search Section**
+  - Date picker for historical quotes
+  - Immediate feedback on search results
+  - Error handling for invalid dates or missing quotes
+
+- **Quote Collection Section**
+  - Author-based filtering
+  - Pagination controls
+  - Responsive quote cards
+  - Loading states and error handling
+
 
 ## Data Model
 
