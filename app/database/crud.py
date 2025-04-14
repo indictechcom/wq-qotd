@@ -1,4 +1,4 @@
-from datetime import datetime, date
+from datetime import datetime, date, timezone
 from sqlalchemy.orm import Session
 from app.database.models import Quote
 from typing import Optional, List
@@ -7,11 +7,15 @@ from sqlalchemy import func
 
 def add_quote_to_db(db: Session, quote_data: dict) -> Quote:
     featured_date = datetime.fromisoformat(quote_data['featured_date']).date()
+    current_time = datetime.now(timezone.utc)
+    
     quote = Quote(
         id=quote_data['id'],
         quote=quote_data['quote'],
         author=quote_data['author'],
-        featured_date=featured_date
+        featured_date=featured_date,
+        created_at=current_time,
+        updated_at=current_time
     )
     db.add(quote)
     db.commit()
