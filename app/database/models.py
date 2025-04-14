@@ -16,10 +16,11 @@ Base = declarative_base()
 # Quote Model
 class Quote(Base):
     __tablename__ = "quotes"
-    id = Column(String(32), primary_key=True, index=True)
+    
+    id = Column(String(32), primary_key=True)
     quote = Column(String(1000), nullable=False)
     author = Column(String(255), nullable=False)
-    featured_date = Column(Date, unique=True, nullable=False)
+    featured_date = Column(Date, unique=True, nullable=False, index=True)
     created_at = Column(DateTime, default=datetime.now(timezone.utc))
     updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
