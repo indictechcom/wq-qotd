@@ -22,17 +22,15 @@ def get_db():
         db.close()
 
 @router.get("/quote_of_the_day", response_model=QuoteSchema)
-async def get_quote_of_the_day(db: Session = Depends(get_db)):
+async def get_quote_of_the_day_route(db: Session = Depends(get_db)):
     """
-    `/api/quote_of_the_day` route is used to get the quote of the day directly from WikiQuote API.
+    `/api/quote_of_the_day` route is used to get the Quote of the Day.
 
-    The reason for fetching the quote directly from the API (and not from the database) is to "get the latest quote of the day, based on what is currently featured on the WikiQuote page `Wikiquote:Quote_of_the_day`".
-    
-    We are not fetching the current quote of the day directly from the database, because the user might be in different timezones (thus different date) and the date on the WikiQuote page might be different, as WikiQuote uses UTC time.
+    First, we fetch the Quote of the Day from the WikiQuote API. Then, we check if that quote is present in the database.
 
-    If the quote is not present in the database, it is added to the database.
+    If the quote is NOT present in the database, it is added to the database and then returned.
 
-    We might change this approach in the future, where the `quote_of_the_day` is fetched from the database directly, once we have implemented the daily job runner to update the quote of the day daily in the database.
+    If the quote is present in the database, it is returned.
     """
     quote_data = fetch_quote_of_the_day_from_api()
     quote = get_quote_by_date(db, quote_data["featured_date"])
