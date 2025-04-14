@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from datetime import date
+from datetime import date, datetime
 
 # Quote Schema for Response
 class QuoteSchema(BaseModel):
@@ -7,6 +7,8 @@ class QuoteSchema(BaseModel):
     quote: str
     author: str
     featured_date: date
+    created_at: datetime
+    updated_at: datetime
 
     class Config:
         # orm_mode = True
