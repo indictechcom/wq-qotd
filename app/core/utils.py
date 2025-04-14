@@ -13,7 +13,7 @@ PARAMS = {
     "formatversion": "2"
 }
 
-def fetch_quote_of_the_day() -> dict:
+def fetch_quote_of_the_day_from_api() -> dict:
     response = requests.get(QOTD_API, params=PARAMS)
     response.raise_for_status()
     data = response.json()
