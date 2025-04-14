@@ -39,3 +39,18 @@ def get_all_quotes(db: Session, page: int, limit: int, author: Optional[str] = N
     if author:
         query = query.filter(Quote.author.ilike(f"%{author}%"))
     return query.offset((page - 1) * limit).limit(limit).all()
+
+def create_multiple_quotes(db: Session, quotes: List[Quote]) -> List[Quote]:
+    try:
+        db_quotes = [Quote(**quote.dict()) for quote in quotes]
+        db.add_all(db_quotes)
+        
+        # Individual refresh instead of refresh_all
+        for quote in db_quotes:
+            db.refresh(quote)
+        
+        return quotes
+    except Exception as e:
+        db.rollback()  # Roll back on error
+        logger.error(f"Error creating quotes: {str(e)}")
+        raise
