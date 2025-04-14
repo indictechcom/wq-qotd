@@ -4,6 +4,10 @@ from app.database.models import Quote
 from typing import Optional, List
 from sqlalchemy import func
 # import uuid
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 def add_quote_to_db(db: Session, quote_data: dict) -> Quote:
     featured_date = datetime.fromisoformat(quote_data['featured_date']).date()
@@ -29,7 +33,6 @@ def get_quote_by_date(db: Session, target_date: str):
     
     target_date_obj = datetime.fromisoformat(target_date).date()
     return db.query(Quote).filter(Quote.featured_date == target_date_obj).first()
-
 
 def get_all_quotes(db: Session, page: int, limit: int, author: Optional[str] = None) -> List[Quote]:
     query = db.query(Quote)
