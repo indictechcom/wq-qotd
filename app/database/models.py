@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, String, DateTime, Date
+from sqlalchemy import create_engine, Column, String, DateTime, Date, Text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from app.core.config import settings
@@ -18,8 +18,8 @@ class Quote(Base):
     __tablename__ = "quotes"
     
     id = Column(String(32), primary_key=True)
-    quote = Column(String(1000), nullable=False)
-    author = Column(String(255), nullable=False)
+    quote = Column(Text, nullable=False)
+    author = Column(Text, nullable=False)
     featured_date = Column(Date, unique=True, nullable=False, index=True)
     created_at = Column(DateTime, default=datetime.now(timezone.utc))
     updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
