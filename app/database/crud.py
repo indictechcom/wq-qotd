@@ -1,9 +1,9 @@
 from datetime import datetime, date, timezone
 from sqlalchemy.orm import Session
 from app.database.models import Quote
-from typing import Optional, List
+from typing import Optional, List, Any
 from sqlalchemy import func
-# import uuid
+import hashlib
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -40,16 +40,51 @@ def get_all_quotes(db: Session, page: int, limit: int, author: Optional[str] = N
         query = query.filter(Quote.author.ilike(f"%{author}%"))
     return query.offset((page - 1) * limit).limit(limit).all()
 
-def create_multiple_quotes(db: Session, quotes: List[Quote]) -> List[Quote]:
+def create_multiple_quotes(db: Session, quotes: List[Any]) -> List[Quote]:
+    """
+    Create multiple quotes in the database from a list of Pydantic QuoteCreate objects.
+    
+    Args:
+        db: SQLAlchemy database session
+        quotes: List of QuoteCreate objects
+        
+    Returns:
+        List of created Quote objects
+    """
     try:
-        db_quotes = [Quote(**quote.dict()) for quote in quotes]
+        # Create SQLAlchemy model instances from Pydantic models
+        current_time = datetime.now(timezone.utc)
+        db_quotes = []
+        
+        for quote in quotes:
+            # Convert Pydantic model to dict
+            try:
+                quote_dict = quote.model_dump()
+            except AttributeError:
+                # If it's already a dict
+                quote_dict = quote
+                
+            # Generate an ID if not provided
+            if 'id' not in quote_dict:
+                # Create a hash based on quote text and date to ensure uniqueness
+                unique_id = hashlib.md5(f"{quote_dict['quote']}_{quote_dict['author']}_{quote_dict['featured_date']}".encode()).hexdigest()
+                quote_dict['id'] = unique_id
+                
+            # Set timestamps if not provided
+            if 'created_at' not in quote_dict:
+                quote_dict['created_at'] = current_time
+            if 'updated_at' not in quote_dict:
+                quote_dict['updated_at'] = current_time
+                
+            db_quote = Quote(**quote_dict)
+            db_quotes.append(db_quote)
+            
+        # Add all quotes to the session
         db.add_all(db_quotes)
+        # Commit the transaction to persist the objects
+        db.commit()
         
-        # Individual refresh instead of refresh_all
-        for quote in db_quotes:
-            db.refresh(quote)
-        
-        return quotes
+        return db_quotes
     except Exception as e:
         db.rollback()  # Roll back on error
         logger.error(f"Error creating quotes: {str(e)}")
