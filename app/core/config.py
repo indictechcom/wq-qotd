@@ -6,11 +6,11 @@ load_dotenv()
 
 class Settings(BaseSettings):
     # Database settings
-    DB_HOST: str = os.getenv("DB_HOST", "localhost")
-    DB_USER: str = os.getenv("DB_USER", "root")
-    DB_PASSWORD: str = os.getenv("DB_PASSWORD", "")
-    DB_NAME: str = os.getenv("DB_NAME", "qotd")
-    DB_PORT: int = int(os.getenv("DB_PORT", "3306"))
+    DB_HOST: str = os.getenv("DB_HOST")
+    DB_USER: str = os.getenv("DB_USER")
+    DB_PASSWORD: str = os.getenv("DB_PASSWORD")
+    DB_NAME: str = os.getenv("DB_NAME")
+    DB_PORT: int = int(os.getenv("DB_PORT"))
 
     # for mysql/mariadb
     @property
