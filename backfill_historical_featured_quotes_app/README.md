@@ -30,7 +30,7 @@ The application uses the following configuration files:
 ## Usage
 
 Run the application from the project root
-(after activating the virtual environment, as described in the main README.md):
+(after activating the virtual environment, as described in the [main README.md](../README.md)):
 
 ```bash
 python -m backfill_historical_featured_quotes_app
