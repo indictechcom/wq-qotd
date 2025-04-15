@@ -44,7 +44,7 @@ def extract_quote(html_content: str) -> dict:
         if quote and author and featured_date:
             break
 
-    unique_id = hashlib.md5(f"{quote}_{author}".encode()).hexdigest()
+    unique_id = hashlib.md5(f"{quote}_{author}_{featured_date}".encode()).hexdigest()
     current_time = datetime.now(timezone.utc).isoformat()
 
     return {
