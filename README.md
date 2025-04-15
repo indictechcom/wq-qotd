@@ -10,20 +10,21 @@ A FastAPI-based REST API that fetches and stores daily quotes from Wikiquote. Th
 -   Filter quotes by author
 -   Pagination support
 -   MariaDB/MySQL database storage
+-   Docker support for development database (docker-compose-dev-db.yml)
 -   Clean and modular code structure
 
 ## Prerequisites
 
 -   Python 3.10+
 -   pip (Python package manager)
--   MariaDB/MySQL database
+-   MariaDB/MySQL database (or Docker for running the development database locally)
 
 ## Installation
 
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/Agamya-Samuel/wq-qotd.git
+    git clone https://github.com/indictechcom/wq-qotd.git
     cd wq-qotd
     ```
 
@@ -54,23 +55,27 @@ A FastAPI-based REST API that fetches and stores daily quotes from Wikiquote. Th
 1. Create a `.env` file in the project root using `.env.example` as a template:
 
     ```env
+    # Database Configuration
     DB_HOST=localhost
-    DB_PORT=3306
     DB_USER=your_username
     DB_PASSWORD=your_password
     DB_NAME=your_database
+    DB_PORT=3306
     ```
 
-2. Create the database:
+## Docker Development Database
 
-    ```sql
-    CREATE DATABASE your_database;
-    ```
+For local development, you can use the provided Docker Compose setup to run a MariaDB instance:
 
-3. Initialize the database:
-    ```bash
-    python -m app.database.init_db
-    ```
+```bash
+docker-compose -f docker-compose-dev-db.yml up -d
+```
+
+This will start a MariaDB instance with the following configuration:
+
+-   Database: s56492\_\_wq-qotd-db
+-   Port: 32768:3306
+-   Root Password: root
 
 ## Running the Application
 
@@ -86,6 +91,7 @@ A FastAPI-based REST API that fetches and stores daily quotes from Wikiquote. Th
 
 ## API Endpoints
 
+-   `GET /`: List all available routes
 -   `GET /api/quote_of_the_day`: Get today's quote
 -   `GET /api/quotes/{date}`: Get quote by date (YYYY-MM-DD)
 -   `GET /api/quotes`: Get all quotes (with pagination and author filter)
@@ -113,9 +119,11 @@ wq-qotd/
 │       ├── __init__.py
 │       └── schemas.py
 ├── main.py
+├── docker-compose-dev-db.yml
 ├── requirements.txt
 ├── .env
 ├── .env.example
+├── .env.production
 └── README.md
 ```
 
@@ -132,15 +140,18 @@ wq-qotd/
         -   `models.py`: SQLAlchemy models
         -   `init_db.py`: Database initialization
     -   `schemas/`: Pydantic models for request/response validation
+-   `docker-compose-dev-db.yml`: Docker Compose configuration for local development database
 
 ## Data Model
 
 ### Quote
 
--   `id`: String (32 chars) - MD5 hash of quote and author
--   `quote`: String (1000 chars) - The quote text
--   `author`: String (255 chars) - The quote's author
+-   `id`: String (32 chars) - MD5 hash of quote, author and featured_date
+-   `quote`: String - The quote text
+-   `author`: String - The quote's author
 -   `featured_date`: Date - The date the quote was featured (YYYY-MM-DD)
+-   `created_at`: Date - The date the quote was created (YYYY-MM-DD HH:MM:SS)
+-   `updated_at`: Date - The date the quote was updated (YYYY-MM-DD HH:MM:SS)
 
 ## Development
 
@@ -172,3 +183,5 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 -   [SQLAlchemy](https://www.sqlalchemy.org/) for the ORM
 -   [Pydantic](https://pydantic-docs.helpmanual.io/) for data validation
 -   [MariaDB](https://mariadb.org/) for the database system
+-   [Docker](https://www.docker.com/) for containerization support
+-   [BeautifulSoup4](https://www.crummy.com/software/BeautifulSoup/) for web scraping functionality
