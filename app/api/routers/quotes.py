@@ -5,7 +5,12 @@ from app.database.models import SessionLocal
 from app.schemas.schemas import Quote
 from app.database.crud import add_quote_to_db, get_quote_by_date, get_all_quotes
 from app.core.utils import fetch_quote_of_the_day_from_api
-from datetime import datetime
+from datetime import datetime, timezone
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Router instance
 router = APIRouter(
@@ -26,16 +31,25 @@ async def get_quote_of_the_day_route(db: Session = Depends(get_db)):
     """
     `/api/quote_of_the_day` route is used to get the Quote of the Day.
 
-    First, we fetch the Quote of the Day from the WikiQuote API. Then, we check if that quote is present in the database.
-
-    If the quote is NOT present in the database, it is added to the database and then returned.
-
-    If the quote is present in the database, it is returned.
+    First, we check if today's quote exists in our database.
+    If it exists, we return it directly from the database.
+    
+    If today's quote is not in the database, we fetch it from the WikiQuote API
+    as a fallback, store it in the database, and then return it.
     """
-    quote_data = fetch_quote_of_the_day_from_api()
-    quote = get_quote_by_date(db, quote_data["featured_date"])
+    # Get today's date
+    today = datetime.now(timezone.utc).date()
+    
+    # Try to get today's quote from database
+    logging.info(f"Attempting to get quote from DB for date: {today}")
+    quote = get_quote_by_date(db, today)
+    
+    # If quote not found in database, fetch from API as fallback
     if not quote:
+        logging.info("Quote not found in database, fetching from WikiQuote API")
+        quote_data = fetch_quote_of_the_day_from_api()
         quote = add_quote_to_db(db, quote_data)
+    
     return quote
 
 @router.get("/quotes", response_model=List[Quote])
