@@ -114,7 +114,6 @@ wq-qotd/
 │       └── schemas.py
 |   ├── static/
 │       ├── index.html
-│       ├── styles.css
 │       └── script.js       
 ├── main.py
 ├── requirements.txt
@@ -155,15 +154,15 @@ The frontend is located in the `app/static` directory:
 ```bash
 app/static/
 ├── index.html    # Main HTML structure
-├── styles.css    # Styling and animations
 └── script.js     # Frontend logic and API interactions
 ```
 
 ### Frontend Technologies
 - HTML5 for structure
-- CSS3 for styling
+- Bootstrap 5 (via CDN) for responsive UI components and styling
 - Vanilla JavaScript for functionality
-- Google Fonts (Poppins) for typography
+- Wikimedia Fonts (Roboto) for typography
+
 
 ### Accessing the Frontend
 The frontend is automatically served when you run the FastAPI application:
