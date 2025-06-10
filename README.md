@@ -109,11 +109,12 @@ wq-qotd/
 │   │   ├── crud.py
 │   │   ├── models.py
 │   │   └── init_db.py
-│   └── schemas/
-│       ├── __init__.py
-│       └── schemas.py
+│   ├── schemas/
+│   │   ├── __init__.py
+│   │   └── schemas.py
 |   ├── static/
 │       ├── index.html
+|       ├── style.css
 │       └── script.js       
 ├── main.py
 ├── requirements.txt
@@ -153,13 +154,14 @@ The application includes a built-in frontend interface served directly from the 
 The frontend is located in the `app/static` directory:
 ```bash
 app/static/
-├── index.html    # Main HTML structure
+├── index.html    # Main HTML structure|
+├── style.css     # custom CSS file
 └── script.js     # Frontend logic and API interactions
 ```
 
 ### Frontend Technologies
 - HTML5 for structure
-- Bootstrap 5 (via CDN) for responsive UI components and styling
+- Bootstrap 5 (via Toolforge CDN) for responsive UI components and styling
 - Vanilla JavaScript for functionality
 - Wikimedia Fonts (Roboto) for typography
 
