@@ -115,9 +115,13 @@ wq-qotd/
 │   │   ├── crud.py
 │   │   ├── models.py
 │   │   └── init_db.py
-│   └── schemas/
-│       ├── __init__.py
-│       └── schemas.py
+│   ├── schemas/
+│   │   ├── __init__.py
+│   │   └── schemas.py
+|   ├── static/
+│       ├── index.html
+|       ├── style.css
+│       └── script.js       
 ├── main.py
 ├── docker-compose-dev-db.yml
 ├── requirements.txt
@@ -140,7 +144,58 @@ wq-qotd/
         -   `models.py`: SQLAlchemy models
         -   `init_db.py`: Database initialization
     -   `schemas/`: Pydantic models for request/response validation
+    -  `static/`: Frontend Related Code
 -   `docker-compose-dev-db.yml`: Docker Compose configuration for local development database
+
+## Frontend Implementation
+
+The application includes a built-in frontend interface served directly from the FastAPI backend.
+
+### Frontend Features
+- Modern, responsive design
+- Quote of the Day display
+- Date-based quote search
+- Author filtering
+- Pagination for quote browsing
+- Error handling and user feedback
+
+### Frontend Structure
+The frontend is located in the `app/static` directory:
+```bash
+app/static/
+├── index.html    # Main HTML structure|
+├── style.css     # custom CSS file
+└── script.js     # Frontend logic and API interactions
+```
+
+### Frontend Technologies
+- HTML5 for structure
+- Bootstrap 5 (via Toolforge CDN) for responsive UI components and styling
+- Vanilla JavaScript for functionality
+- Wikimedia Fonts (Roboto) for typography
+
+
+### Accessing the Frontend
+The frontend is automatically served when you run the FastAPI application:
+
+
+### Frontend Features Breakdown
+- **Quote of the Day Section**
+  - Automatically displays the current day's quote
+  - Updates daily
+  - Animated card layout
+
+- **Date Search Section**
+  - Date picker for historical quotes
+  - Immediate feedback on search results
+  - Error handling for invalid dates or missing quotes
+
+- **Quote Collection Section**
+  - Author-based filtering
+  - Pagination controls
+  - Responsive quote cards
+  - Loading states and error handling
+
 
 ## Data Model
 

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Quote of the Day</title>
+
+   <link href="https://tools-static.wmflabs.org/cdnjs/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://tools-static.wmflabs.org/cdnjs/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">  
+   <link href="https://fonts.wikimedia.org/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+    <div class="container py-5">
+        <!-- Header -->
+        <div class="text-center mb-5">
+            <h1 class="display-4 gradient-text fw-bold mb-3">Quote of the Day</h1>
+            <p class="lead text-muted">Discover wisdom from great minds throughout history</p>
+        </div>
+
+        <!-- Quote of the Day Section -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm card-hover">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-quote text-primary fs-3 me-2"></i>
+                            <h2 class="card-title mb-0 gradient-text">Today's Quote</h2>
+                        </div>
+                        <div class="p-4 bg-light rounded-3 border-start border-primary border-4">
+                            <p class="quote-text mb-3 fst-italic" id="quoteText">Loading...</p>
+                            <p class="quote-author text-end mb-0" id="quoteAuthor"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search by Date Section -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm card-hover">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-calendar-date text-primary fs-3 me-2"></i>
+                            <h2 class="card-title mb-0 gradient-text">Search by Date</h2>
+                        </div>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-8">
+                                <input type="date" id="datePicker" class="form-control form-control-lg border-2" />
+                            </div>
+                            <div class="col-md-4">
+                                <button onclick="searchByDate()" class="btn btn-primary btn-lg btn-gradient w-100">
+                                    <i class="bi bi-search me-2"></i>Search Quote
+                                </button>
+                            </div>
+                        </div>
+                        <div id="dateSearchResult" class="d-none">
+                            <div class="p-4 bg-light rounded-3 border-start border-primary border-4">
+                                <!-- Search results will be inserted here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- All Quotes Section -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-collection text-primary fs-3 me-2"></i>
+                            <h2 class="card-title mb-0 gradient-text">Quote Collection</h2>
+                        </div>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-8">
+                                <div class="position-relative">
+                                    <input type="text" id="authorFilter" placeholder="Search by author or quote content..." 
+                                           class="form-control form-control-lg border-2 pe-5"/>
+                                    <i class="bi bi-search position-absolute top-50 end-0 translate-middle-y me-3 text-muted"></i>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <button onclick="clearFilter()" class="btn btn-outline-secondary btn-lg w-100">
+                                    <i class="bi bi-x-circle me-2"></i>Clear Filter
+                                </button>
+                            </div>
+                        </div>
+                        <div id="searchStatus" class="mb-3 d-none">
+                            <div class="alert alert-info mb-0">
+                                <i class="bi bi-search me-2"></i>
+                                <span id="searchStatusText">Searching...</span>
+                            </div>
+                        </div>
+                        <div id="quotesList" class="row g-4 mb-4">
+                            <!-- Quotes will be inserted here -->
+                        </div>
+                        <div class="d-flex justify-content-center align-items-center gap-3">
+                            <button onclick="previousPage()" class="btn btn-outline-primary btn-lg">
+                                <i class="bi bi-chevron-left me-2"></i>Previous
+                            </button>
+                            <span id="pageInfo" class="badge bg-primary fs-6 px-3 py-2">Page 1</span>
+                            <button onclick="nextPage()" class="btn btn-outline-primary btn-lg">
+                                Next<i class="bi bi-chevron-right ms-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script src="static/script.js"></script>
+</body>
+</html>
