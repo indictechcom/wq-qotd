@@ -1,6 +1,6 @@
 # Makefile for managing the Dockerized FastAPI application
 
-.PHONY: help build up down logs restart shell clean rebuild dev prod status
+.PHONY: help build up down logs restart shell clean rebuild dev prod status dev-db-up init-db
 
 # Default target
 help: ## Show this help message
@@ -15,6 +15,9 @@ up: ## Start the services in detached mode
 
 down: ## Stop and remove the services
 	docker-compose down
+
+dev-db-up: ## Start the development database server
+	docker-compose -f docker-compose-dev-db.yml up -d
 
 logs: ## Follow the logs of all services
 	docker-compose logs -f
@@ -66,6 +69,9 @@ lint: ## Run linting inside the backend container
 
 format: ## Format code using black inside the backend container
 	docker-compose exec backend python -m black app/
+
+init-db: ## Initialize the database
+	docker-compose exec backend python -m app.database.init_db
 
 # Monitoring
 top: ## Show running processes in containers

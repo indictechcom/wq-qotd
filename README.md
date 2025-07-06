@@ -28,17 +28,44 @@ A FastAPI-based REST API that fetches and stores daily quotes from Wikiquote. Th
     cd wq-qotd
     ```
 
-2. Create and configure a `.env` file from the example with your external database credentials:
+2. **Start the local development database:**
+
+    This command starts a MariaDB container for local development.
+
+    ```bash
+    make dev-db-up
+    ```
+
+3. **Configure your `.env` file for the local database:**
+
+    Copy the `.env.example` to `.env`. The default values are configured for the local development database.
 
     ```bash
     cp .env.example .env
-    # now edit .env with your database details
     ```
 
-3. Build and start the application:
+    Your `.env` file should look like this for local development:
+    ```env
+    # Database Configuration
+    DB_HOST=
+    DB_USER=
+    DB_PASSWORD=
+    DB_NAME=
+    DB_PORT=
+    ```
+
+4. **Build and start the application services:**
 
     ```bash
     make up
+    ```
+
+5. **Initialize the database:**
+
+    This command creates the necessary tables in the local database.
+
+    ```bash
+    make init-db
     ```
 
 4. Access the application:
@@ -61,6 +88,12 @@ make build
 
 # Start all services in detached mode
 make up
+
+# Start the development database server
+make dev-db-up
+
+# Initialize the database
+make init-db
 
 # View logs from all services
 make logs
@@ -108,9 +141,9 @@ docker-compose down
 docker-compose exec backend /bin/bash
 ```
 
-## Configuration
+## Connecting to an External Database
 
-The application uses environment variables for configuration. Copy `.env.example` to `.env` and provide the connection details for your external database:
+If you prefer to use an external database instead of the local development one, update your `.env` file with your database credentials:
 
 ```env
 # Database Configuration
@@ -120,6 +153,8 @@ DB_PASSWORD=your_external_db_password
 DB_NAME=your_external_db_name
 DB_PORT=your_external_db_port
 ```
+
+After configuring the `.env` file, you can build and start the application with `make up`. If it's the first time, you might need to initialize the database schema. You can adapt the `init-db` command or connect to your database and create the schema manually from the models defined in `app/database/models.py`.
 
 ## Development Workflow
 
