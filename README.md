@@ -10,16 +10,16 @@ A FastAPI-based REST API that fetches and stores daily quotes from Wikiquote. Th
 -   Filter quotes by author
 -   Pagination support
 -   MariaDB/MySQL database storage
--   Docker support for development database (docker-compose-dev-db.yml)
+-   Full Docker containerization with Docker Compose
+-   Makefile for simplified development workflow
 -   Clean and modular code structure
 
 ## Prerequisites
 
--   Python 3.10+
--   pip (Python package manager)
--   MariaDB/MySQL database (or Docker for running the development database locally)
+-   Docker and Docker Compose
+-   Make (optional, but recommended for easier command management)
 
-## Installation
+## Quick Start with Docker
 
 1. Clone the repository:
 
@@ -28,66 +28,141 @@ A FastAPI-based REST API that fetches and stores daily quotes from Wikiquote. Th
     cd wq-qotd
     ```
 
-2. Create a virtual environment:
+2. Create and configure a `.env` file from the example with your external database credentials:
 
     ```bash
-    python -m venv venv
+    cp .env.example .env
+    # now edit .env with your database details
     ```
 
-3. Activate the virtual environment:
+3. Build and start the application:
 
-    - Windows:
-        ```bash
-        .\venv\Scripts\activate
-        ```
-    - Unix/MacOS:
-        ```bash
-        source venv/bin/activate
-        ```
+    ```bash
+    make up
+    ```
 
-4. Install dependencies:
+4. Access the application:
+    - Frontend: http://localhost:8000
+    - API Documentation: http://localhost:8000/docs
+    - ReDoc: http://localhost:8000/redoc
+
+## Docker Development Setup
+
+### Using Makefile Commands (Recommended)
+
+The project includes a `Makefile` with convenient commands for managing the Docker environment:
+
+```bash
+# Show all available commands
+make help
+
+# Build the Docker images
+make build
+
+# Start all services in detached mode
+make up
+
+# View logs from all services
+make logs
+
+# View logs from backend only
+make logs-backend
+
+# Stop all services
+make down
+
+# Restart all services
+make restart
+
+# Open a shell in the backend container
+make shell
+
+# Show service status
+make status
+
+# Clean up (remove containers, networks, and volumes)
+make clean
+
+# Rebuild everything from scratch
+make rebuild
+```
+
+### Using Docker Compose Directly
+
+If you prefer to use Docker Compose commands directly:
+
+```bash
+# Build and start services
+docker-compose up --build
+
+# Start services in detached mode
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop services
+docker-compose down
+
+# Access backend container shell
+docker-compose exec backend /bin/bash
+```
+
+## Configuration
+
+The application uses environment variables for configuration. Copy `.env.example` to `.env` and provide the connection details for your external database:
+
+```env
+# Database Configuration
+DB_HOST=your_external_db_host
+DB_USER=your_external_db_user
+DB_PASSWORD=your_external_db_password
+DB_NAME=your_external_db_name
+DB_PORT=your_external_db_port
+```
+
+## Development Workflow
+
+1. **Start the development environment:**
+   ```bash
+   make dev
+   ```
+
+2. **Make code changes:** The application supports live reloading, so changes to the code will automatically restart the server.
+
+3. **View logs:**
+   ```bash
+   make logs
+   ```
+
+
+## Traditional Installation (Alternative)
+
+If you prefer to run the application without Docker:
+
+### Prerequisites
+-   Python 3.10+
+-   pip (Python package manager)
+-   MariaDB/MySQL database
+
+### Setup Steps
+1. Create a virtual environment:
+    ```bash
+    python -m venv venv
+    source venv/bin/activate  # On Windows: .\venv\Scripts\activate
+    ```
+
+2. Install dependencies:
     ```bash
     pip install -r requirements.txt
     ```
 
-## Configuration
+3. Configure environment variables in `.env`
 
-1. Create a `.env` file in the project root using `.env.example` as a template:
-
-    ```env
-    # Database Configuration
-    DB_HOST=localhost
-    DB_USER=your_username
-    DB_PASSWORD=your_password
-    DB_NAME=your_database
-    DB_PORT=3306
-    ```
-
-## Docker Development Database
-
-For local development, you can use the provided Docker Compose setup to run a MariaDB instance:
-
-```bash
-docker-compose -f docker-compose-dev-db.yml up -d
-```
-
-This will start a MariaDB instance with the following configuration:
-
--   Database: s56492\_\_wq-qotd-db
--   Port: 32768:3306
--   Root Password: root
-
-## Running the Application
-
-1. Start the FastAPI server:
-
+4. Start the application:
     ```bash
     uvicorn main:app --reload
     ```
-
-2. Access the API documentation at:
-    - Swagger UI: http://localhost:8000/docs
-    - ReDoc: http://localhost:8000/redoc
 
 ## API Endpoints
 
@@ -118,16 +193,19 @@ wq-qotd/
 │   ├── schemas/
 │   │   ├── __init__.py
 │   │   └── schemas.py
-|   ├── static/
+│   └── static/
 │       ├── index.html
-|       ├── style.css
-│       └── script.js       
+│       ├── style.css
+│       └── script.js
 ├── main.py
-├── docker-compose-dev-db.yml
+├── Dockerfile
+├── docker-compose.yml
+├── docker-compose-dev-db.yml (legacy)
+├── Makefile
+├── .dockerignore
 ├── requirements.txt
 ├── .env
 ├── .env.example
-├── .env.production
 └── README.md
 ```
 
@@ -144,8 +222,12 @@ wq-qotd/
         -   `models.py`: SQLAlchemy models
         -   `init_db.py`: Database initialization
     -   `schemas/`: Pydantic models for request/response validation
-    -  `static/`: Frontend Related Code
--   `docker-compose-dev-db.yml`: Docker Compose configuration for local development database
+    -   `static/`: Frontend Related Code
+-   `Dockerfile`: Multi-stage Docker configuration for the FastAPI application
+-   `docker-compose.yml`: Docker Compose configuration for all services (backend + database)
+-   `docker-compose-dev-db.yml`: Legacy Docker Compose configuration (database only)
+-   `Makefile`: Convenient commands for managing the Docker environment
+-   `.dockerignore`: Files and directories to exclude from Docker build context
 
 ## Frontend Implementation
 
