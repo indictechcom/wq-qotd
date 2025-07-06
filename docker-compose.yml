@@ -1,0 +1,23 @@
+name: wq-qotd
+
+services:
+  backend:
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: wq-qotd-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      # Bind mount for live code reloading during development
+      - ./app:/app/app
+      - ./main.py:/app/main.py
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/docs')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
