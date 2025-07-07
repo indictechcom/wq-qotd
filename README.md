@@ -201,7 +201,6 @@ If you prefer to run the application without Docker:
 
 ## API Endpoints
 
--   `GET /`: List all available routes
 -   `GET /api/quote_of_the_day`: Get today's quote
 -   `GET /api/quotes/{date}`: Get quote by date (YYYY-MM-DD)
 -   `GET /api/quotes`: Get all quotes (with pagination and author filter)
