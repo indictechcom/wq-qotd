@@ -1,7 +1,7 @@
 import hashlib
 import requests
 from bs4 import BeautifulSoup
-from datetime import datetime
+from datetime import datetime, timezone
 import re
 
 QOTD_API = 'https://en.wikiquote.org/w/api.php'
@@ -13,7 +13,7 @@ PARAMS = {
     "formatversion": "2"
 }
 
-def fetch_quote_of_the_day() -> dict:
+def fetch_quote_of_the_day_from_api() -> dict:
     response = requests.get(QOTD_API, params=PARAMS)
     response.raise_for_status()
     data = response.json()
@@ -45,10 +45,13 @@ def extract_quote(html_content: str) -> dict:
             break
 
     unique_id = hashlib.md5(f"{quote}_{author}".encode()).hexdigest()
+    current_time = datetime.now(timezone.utc).isoformat()
 
     return {
         "id": unique_id,
         "quote": quote,
         "author": author,
         "featured_date": featured_date,
+        "created_at": current_time,
+        "updated_at": current_time
     }

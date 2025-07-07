@@ -1,0 +1,21 @@
+name: wiki-qotd-db
+
+services:
+    mariadb:
+        image: mariadb:10.11
+        container_name: mariadb-local
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_DATABASE=s56492__wq-qotd-db
+        ports:
+            - '32768:3306'
+        volumes:
+            - mariadb_data:/var/lib/mysql
+        networks:
+            - localnet
+
+volumes:
+    mariadb_data:
+
+networks:
+    localnet:
